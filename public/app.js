@@ -8,6 +8,15 @@ function initialize() {
     locate();
 }
 
+function markLocation(coordinates) {
+    map.setZoom(15);
+    map.panTo(coordinates);
+    var marker = new google.maps.Marker({
+        map: map,
+        position: coordinates
+    });
+}
+
 function locate(address) {
     if(!address){
         return;
@@ -18,12 +27,6 @@ function locate(address) {
     client.setRequestHeader("Content-type", "application/json");
     client.send('{"address" : "'+address+'"}');
 
-    var response = JSON.parse(client.responseText);
-    map.setCenter(response);
-
-    var marker = new google.maps.Marker({
-        map: map,
-        position: response
-    });
-
+    var coordinate = JSON.parse(client.responseText);
+    markLocation(coordinate);
 }
